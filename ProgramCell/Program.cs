@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharpFunctionalExtensions;
+using System;
 using System.Data.Common;
 
 namespace TicTacToe;
@@ -10,6 +11,8 @@ internal class Program
 
     static void Main(string[] args)
     {
+        Console.WriteLine("Welcome to Tic Tac Toc");
+
         List<Cell> grid = new List<Cell>()
         {
             Cell.EmptyCell(1, 1),
@@ -29,30 +32,24 @@ internal class Program
         {
             try
             {
-                Console.WriteLine($"Player {currentPlayer} - Enter row (1-3) and column (1-3), separated by a space, or 'q' to quit...");
-                string? input = Console.ReadLine();
+                Console.WriteLine("To quit the game press 'q'");
+                Console.WriteLine($"Player {currentPlayer} - Enter a row number between 1 to 3");
+                string? inputRow = Console.ReadLine();
+                Console.WriteLine($"Player {currentPlayer} - Enter a column number between 1 to 3");
+                string? inputColumn = Console.ReadLine();
 
-                if (string.Compare(input, "q", StringComparison.OrdinalIgnoreCase) == 0)
+                if (inputRow == "q" || inputColumn == "q")
                     break;
 
-                string[]? splittedInput = input?.Split(' ');
-
-                if (int.TryParse(splittedInput?[0], out int targetRow) is false ||
-                    targetRow < 1 || targetRow > 3)
+                int rowInput = VerifyUserInput(inputRow);
+                int ColumnInput = VerifyUserInput(inputColumn);
+                if (rowInput == 0 || ColumnInput == 0)
                 {
-                    Console.WriteLine("Invalid target cell row must be betwen 1 and 3");
+                    Console.WriteLine("At least one input is outside of it's range or is not even a number");
                     continue;
                 }
 
-                if (int.TryParse(splittedInput?[1], out int targetColumn) is false ||
-                    targetColumn < 1 || targetColumn > 3)
-                {
-                    Console.WriteLine("Invalid target cell column must be betwen 1 and 3");
-                    continue;
-                }
-
-                bool movePlayedSuccessfully = PlayOnGameBoard(grid, targetRow, targetColumn, currentPlayer);
-
+                bool movePlayedSuccessfully = PlayOnGameBoard(grid, rowInput, ColumnInput, currentPlayer);
                 if (movePlayedSuccessfully is false)
                 {
                     Console.WriteLine("Invalid move");
@@ -74,17 +71,24 @@ internal class Program
                 }
 
                 currentPlayer = currentPlayer == PlayerOne ? PlayerTwo : PlayerOne;
+
             }
             catch (Exception)
             {
-                Console.WriteLine("A problem was encountered, the input entered doesn't corresponding to the requirement. Try again");
+                Console.WriteLine("A problem was encountered, it's possible that the input entered doesn't corresponding to the requirement. Try again");
                 continue;
             }
-            
-
-
         }
     }
+
+    private static int VerifyUserInput(string? input)
+    {
+        if (int.TryParse(input, out int target) is false || target < 1 || target > 3)
+            return 0;
+
+        return target;
+    }
+
 
     private static void DisplayGameBoard(List<Cell> grid)
     {
@@ -131,38 +135,22 @@ internal class Program
         IEnumerable<IGrouping<int, Cell>> rows = grid
             .GroupBy(cell => cell.Row);
 
-        if (rows.Any(row =>
-            row.All(cell => cell.Value == PlayerOne) ||
-            row.All(cell => cell.Value == PlayerTwo)))
-        {
+        if (rows.Any(row => row.All(cell => cell.Value == PlayerOne) || row.All(cell => cell.Value == PlayerTwo)))
             return true;
-        }
 
         IEnumerable<IGrouping<int, Cell>> columns = grid
             .GroupBy(cell => cell.Column);
 
-        if (columns.Any(column =>
-            column.All(cell => cell.Value == PlayerOne) ||
-            column.All(cell => cell.Value == PlayerTwo)))
-        {
+        if (columns.Any(column => column.All(cell => cell.Value == PlayerOne) || column.All(cell => cell.Value == PlayerTwo)))
             return true;
-        }
 
         IEnumerable<Cell> firstDiagonal = grid.Where(c => c.Row == c.Column);
         IEnumerable<Cell> secondDiagonal = grid.Where(c => (c.Row + c.Column) == 4);
 
-        var diagonals = new List<IEnumerable<Cell>>
-        {
-            firstDiagonal,
-            secondDiagonal
-        };
+        var diagonals = new List<IEnumerable<Cell>> { firstDiagonal, secondDiagonal };
 
-        if (diagonals.Any(diagonal =>
-            diagonal.All(cell => cell.Value == PlayerOne) ||
-            diagonal.All(cell => cell.Value == PlayerTwo)))
-        {
+        if (diagonals.Any(diagonal => diagonal.All(cell => cell.Value == PlayerOne) || diagonal.All(cell => cell.Value == PlayerTwo)))
             return true;
-        }
 
         return false;
     }
