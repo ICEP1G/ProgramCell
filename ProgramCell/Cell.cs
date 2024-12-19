@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe;
 
-internal class Cell
+public class Cell
 {
     public int Row { get; private set; }
     public int Column { get; private set; }
@@ -19,11 +19,11 @@ internal class Cell
         this.Value = null;
     }
 
-    internal void UpdateValue(char value)
+    public void UpdateValue(char value)
     {
         this.Value = value;
     }
 
-    internal static Cell EmptyCell(int row, int column)
+    public static Cell EmptyCell(int row, int column)
         => new Cell(row, column);
 }

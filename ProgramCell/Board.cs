@@ -6,11 +6,11 @@ using ProgramCell;
 
 namespace TicTacToe;
 
-internal class Board
+public class Board
 {
     public List<Cell> grid { get; private set; } = new List<Cell>();
 
-    internal void Init()
+    public void Init()
     {
         this.grid = new List<Cell>()
         {
@@ -26,7 +26,7 @@ internal class Board
         };
     }
 
-    internal void DisplayGameBoardAndHeader()
+    public void DisplayGameBoardAndHeader()
     {
         Console.Clear();
         DisplayGameHeader();
@@ -90,8 +90,7 @@ internal class Board
         return Maybe.None;
     }
 
-
-    public bool IsGameBoardWin()
+    public bool IsHorizontalGameBoardWin()
     {
         IEnumerable<IGrouping<int, Cell>> rows = grid
             .GroupBy(cell => cell.Row);
@@ -103,6 +102,11 @@ internal class Board
             return true;
         }
 
+        return false;
+    }
+
+    public bool IsVerticalGameBoardWin()
+    {
         IEnumerable<IGrouping<int, Cell>> columns = grid
             .GroupBy(cell => cell.Column);
 
@@ -113,6 +117,11 @@ internal class Board
             return true;
         }
 
+        return false;
+    }
+
+    public bool IsDiagonalGameBoardWin()
+    {
         IEnumerable<Cell> firstDiagonal = grid.Where(c => c.Row == c.Column);
         IEnumerable<Cell> secondDiagonal = grid.Where(c => (c.Row + c.Column) == 4);
 
@@ -128,6 +137,21 @@ internal class Board
         {
             return true;
         }
+
+        return false;
+    }
+
+
+    public bool IsGameBoardWin()
+    {
+        if (IsHorizontalGameBoardWin())
+            return true;
+
+        if (IsVerticalGameBoardWin())
+            return true;
+
+        if (IsDiagonalGameBoardWin())
+            return true;
 
         return false;
     }

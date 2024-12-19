@@ -27,7 +27,6 @@ namespace ProgramCell.Test
             move.Value.Column
                 .Should()
                 .BeInRange(1, 3);
-
         }
     }
 }
