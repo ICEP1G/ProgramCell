@@ -16,14 +16,30 @@ namespace ProgramCell
         }
 
         public char Icon { get; }
+        public int ResponseTimeInSecond { get; private set; } = 2;
 
-        public Result<PlayerMoves> GetNextMove()
+        public async Task<Result<PlayerMoves>> GetNextMove()
         {
+            bool AiIsThinking = true;
+            Console.WriteLine("Awaiting the AI to do the next move");
+            Task.Run(() =>
+            {
+                while (AiIsThinking)
+                {
+                    Console.Write(".");
+                    Thread.Sleep(500);
+                }
+            });
+
             Random random = new Random();
             int randomNumberRow = random.Next(1, 4);
             int randomNumberColumn = random.Next(1, 4);
 
             int[]? numbers = { randomNumberRow, randomNumberColumn };
+
+
+            await Task.Delay(ResponseTimeInSecond * 1000);
+            AiIsThinking = false;
 
             if (numbers[0] < 1 || numbers[0] > 3)
             {

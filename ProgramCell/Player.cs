@@ -12,7 +12,7 @@ public class Player : IPlayer
 
     public char Icon { get; }
 
-    public Result<PlayerMoves> GetNextMove()
+    public async Task<Result<PlayerMoves>> GetNextMove()
     {
         Console.WriteLine($"Player {Icon} - Enter row (1-3) and column (1-3), separated by a space");
         string? input = Console.ReadLine();

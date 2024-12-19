@@ -28,13 +28,13 @@ internal class Game
         this.currentPlayer = this.player1;
     }
 
-    public void Play()
+    public async Task Play()
     {
         this.board.DisplayGameBoardAndHeader();
 
         while (true)
         {
-            Result<PlayerMoves> playerMoves = this.currentPlayer.GetNextMove();
+            Result<PlayerMoves> playerMoves = await this.currentPlayer.GetNextMove();
             if (playerMoves.IsFailure)
             {
                 Console.WriteLine(playerMoves.Error);

@@ -7,13 +7,13 @@ namespace ProgramCell.Test
     public class RandomPlayerTests
     {
         [Fact]
-        public void GetNextMove_Default_ReturnsAValidPlayerMove()
+        public async Task GetNextMove_Default_ReturnsAValidPlayerMove()
         {
             // Assign
             RandomPlayer aiPlayer = new('O');
 
             // Act
-            Result<PlayerMoves> move = aiPlayer.GetNextMove();
+            Result<PlayerMoves> move = await aiPlayer.GetNextMove();
 
             // Assert
             move.IsSuccess

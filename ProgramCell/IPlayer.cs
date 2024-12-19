@@ -5,7 +5,7 @@ namespace ProgramCell
 {
     public interface IPlayer
     {
-        Result<PlayerMoves> GetNextMove();
+        Task<Result<PlayerMoves>> GetNextMove();
         char Icon { get; }
     }
 }
