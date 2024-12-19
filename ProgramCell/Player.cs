@@ -3,7 +3,7 @@ using ProgramCell;
 
 namespace TicTacToe;
 
-internal class Player : IPlayer
+public class Player : IPlayer
 {
     public Player(char icon)
     {

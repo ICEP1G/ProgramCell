@@ -19,7 +19,7 @@ internal class Game
     {
         this.board = new Board();
         this.player1 = new Player(PlayerOneIcon);
-        this.player2 = new StupidAI(PlayerTwoIcon);
+        this.player2 = new RandomPlayer(PlayerTwoIcon);
     }
 
     public void Init()

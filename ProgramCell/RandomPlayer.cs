@@ -8,9 +8,9 @@ using TicTacToe;
 
 namespace ProgramCell
 {
-    public class StupidAI : IPlayer
+    public class RandomPlayer : IPlayer
     {
-        public StupidAI(char icon)
+        public RandomPlayer(char icon)
         {
             Icon = icon;
         }
